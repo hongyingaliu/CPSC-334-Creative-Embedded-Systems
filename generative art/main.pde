@@ -1,3 +1,4 @@
+
 class Animation {
   PImage[] images;
   int imageCount;
@@ -35,11 +36,17 @@ float randomX;
 float randomY;
 float dx;
 float dy;
-float exponent = 4;
+float exponent = 5;
 float pct = 0.0;
 float step = 0.01;
 float prevx;
 float prevy;
+
+int numofbranches;
+FloatList xbranches;
+FloatList ybranches;
+PImage branch;
+PImage branch_flipped;
 
 void setup() {
   //full size needed
@@ -60,12 +67,28 @@ void setup() {
   //dy = randomY - prevy;
   animation1 = new Animation("/Users/AlanaLiu/documents/processing/generativeart/bluebirb/", 8);
   animation2 = new Animation("/Users/AlanaLiu/documents/processing/generativeart/bluebirb_flipped/", 8);
-  
+  branch = loadImage("branch.png");
+  branch_flipped = loadImage("branch_flipped.png");
+  //generate random branches
+  createBranches();
 }
 
 void draw() {
   background(102);
-  print("x: " + xpos + "y; " + ypos + "\n");
+  //image(branch, 300, 300);
+  //print(xbranches.get(0));
+  for(int i = 0; i<numofbranches+1; i++){
+    float x = xbranches.get(i);
+    float y = ybranches.get(i);
+    //print(x);
+    //print(y);
+    if(x == width-400){
+      image(branch,x,y,400,136);
+    } else {
+      image(branch_flipped,x,y,400,136);
+    }  
+  }
+  //print("x: " + xpos + "y; " + ypos + "\n");
   //dx = randomX - xpos;
   //dy = randomY - ypos;
   dx = randomX - prevx;
@@ -83,6 +106,7 @@ void draw() {
     genPoint();
     pct = 0.0;
     print("new point");
+    delay(4000);
     //print("new point " + prevx + prevy + "\n" + randomX + " " + randomY);
   }
   //ellipse(xpos, ypos, diam, diam);
@@ -91,18 +115,35 @@ void draw() {
   } else {
     animation2.display(xpos-animation1.getWidth()/2, ypos);
   }
+  
+
+  
   //choose landing point
   //go towards landing point
 }
 
 void genPoint() {
   randomX = random(width);
-  randomY = random(height-10);
+  randomY = random(height-100);
 }
 
+void createBranches() {
 
-
-//loadPixels(); access pixel array
-//pixel location is always = x + y*width
-//updatePixels();
-//brightness threshold filter
+  xbranches = new FloatList();
+  ybranches = new FloatList();
+  numofbranches = int(random(3,6));
+  for(int i = 0; i<numofbranches+1; i++){
+      float x;
+      if (int(random(0,2.0)) < 1){
+        x = 0;
+      } else {
+        x = width-400;
+      }
+      
+      float y = random(height-100);
+      print(x+"\n");
+      print(y+"\n");
+      xbranches.append(x);
+      ybranches.append(y);
+  }
+}
