@@ -1,4 +1,3 @@
-
 class Animation {
   PImage[] images;
   int imageCount;
@@ -47,6 +46,7 @@ FloatList xbranches;
 FloatList ybranches;
 PImage branch;
 PImage branch_flipped;
+int previndex;
 
 void setup() {
   //full size needed
@@ -57,12 +57,13 @@ void setup() {
   
   //animation 1 = new Animation();
   //ellipseMode(RADIUS);
-  xpos = width/2;
-  ypos = height/2;
-  prevx = width/2;
-  prevy = height/2;
-  randomX = 20;
-  randomY = 20;
+  createBranches();
+  genPoint();
+  prevx = randomX;
+  prevy = randomY;
+  xpos = prevx;
+  ypos = prevy;
+  genPoint();
   //dx = randomX - prevx;
   //dy = randomY - prevy;
   animation1 = new Animation("/Users/AlanaLiu/documents/processing/generativeart/bluebirb/", 8);
@@ -70,14 +71,14 @@ void setup() {
   branch = loadImage("branch.png");
   branch_flipped = loadImage("branch_flipped.png");
   //generate random branches
-  createBranches();
+  
 }
 
 void draw() {
   background(102);
   //image(branch, 300, 300);
   //print(xbranches.get(0));
-  for(int i = 0; i<numofbranches+1; i++){
+  for(int i = 0; i < numofbranches+1; i++){
     float x = xbranches.get(i);
     float y = ybranches.get(i);
     //print(x);
@@ -100,13 +101,14 @@ void draw() {
   }
   //xpos = xpos + dx/drag;
   //ypos = ypos + pow(pct, exponent)*(dy/drag);
-  if ((randomX - 10 < xpos && xpos < randomX + 10) && (randomY - 10 < ypos && ypos < randomY + 10)){
+  if ((randomX - 1 < xpos && xpos < randomX + 1) && (randomY - 1 < ypos && ypos < randomY + 1)){
     prevx = randomX;
     prevy = randomY;
+    //choose new point
     genPoint();
     pct = 0.0;
-    print("new point");
-    delay(4000);
+    
+    delay(2000);
     //print("new point " + prevx + prevy + "\n" + randomX + " " + randomY);
   }
   //ellipse(xpos, ypos, diam, diam);
@@ -123,8 +125,21 @@ void draw() {
 }
 
 void genPoint() {
-  randomX = random(width);
-  randomY = random(height-100);
+//  randomX = random(width);
+//  randomY = random(height-100);
+    int index = int(random(0,numofbranches));
+    if(index == previndex) {
+      if(index != numofbranches) {
+        index = index + 1;
+      } else {
+        index = index - 1;
+      }
+    }
+    
+    previndex = index;
+    randomX = xbranches.get(index) + random(50, 200);
+    randomY = ybranches.get(index) - 130;
+    print("new point");
 }
 
 void createBranches() {
