@@ -234,24 +234,26 @@ void setup() {
   frameRate(16);
   //size(1360, 768);
   box1 = new Box(0);
-  box1.createBranches(); //<>//
+  box1.createBranches();
   box1.createBirds();
+  
   box2 = new Box(1);
   box2.createBranches();
   box2.createBirds();
+  
   box3 = new Box(2);
   box3.createBranches();
   box3.createBirds();
+  
   box4 = new Box(3);
   box4.createBranches();
   box4.createBirds();
-  box4 = new Box(4);
-  box4.createBranches();
-  box4.createBirds(); 
-  box5 = new Box(5);
+  
+  box5 = new Box(4);
   box5.createBranches();
-  box5.createBirds();
-  box6 = new Box(6);
+  box5.createBirds(); 
+  
+  box6 = new Box(5);
   box6.createBranches();
   box6.createBirds();  
 }
