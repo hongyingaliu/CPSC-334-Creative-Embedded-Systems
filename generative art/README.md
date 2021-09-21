@@ -14,6 +14,11 @@ This generative program consists of one main file titled "genart.pde" and an acc
 
 Processing was chosen as the language and software editor of choice for this project. The advantages of Processing is that it has was made with a focus on creating visual applications/experiences so it had extensive visual display libraries and did not need to be downloaded to run on the Leeds computer. Some disadvantages of Processing included a little less freedom, because their code is already very structured, and that Processing does not have the most efficient use of memory (example: animation becomes easily too large because every element including the background is often redrawn).
 
+## Components
+
+The most important asset to this program were the images, which included gifs split into images of a bird flying both direction and landing both directions, as well as the tree branches. Part of the fun of this task was creating my own images and thus contributing a paper, kid's sketchbook, sort of aesthetic. Within the program, the animation is broken down into three generatable and mutable objects, the box that fills each screen, the tree branches, and the birds.
+
+
 
 
 
