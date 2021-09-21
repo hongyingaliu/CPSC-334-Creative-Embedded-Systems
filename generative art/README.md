@@ -16,7 +16,7 @@ Processing was chosen as the language and software editor of choice for this pro
 
 ## Components
 
-The most important asset to this program were the images, which included gifs split into images of a bird flying both direction and landing both directions, as well as the tree branches. Part of the fun of this task was creating my own images and thus contributing a paper, kid's sketchbook, sort of aesthetic. Within the program, the animation is broken down into three generatable and mutable objects, the box that fills each screen, the tree branches, and the birds.
+The most important asset to this program were the images, which included gifs split into images of a bird flying both direction and landing both directions, as well as the tree branches. Part of the fun of this task was creating my own images and thus contributing a paper, kid's sketchbook, sort of aesthetic. Within the program, the animation is broken down into three generatable and mutable objects, the box that fills each screen, the tree branches, and the birds. The birds utilize a class that allows for the animation of gifs within Processing. The path of the birds is determined by a random selection of a point near/on a tree branch. 
 
 
 
