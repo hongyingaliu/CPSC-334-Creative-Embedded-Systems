@@ -1,6 +1,6 @@
 # Generative Art - Paper Birds in a Forest
 
-Paper Birds in a Forest is an art piece in which an non-ending animation of birds flying in curved paths and landing on tree branches is generated. It aims to emulate an outdoors birdwatching experience but indoors. The animation is meant to utilze the columns between each screen in the Leeds studio as tree trunks. The color of each projector's background, the number and position of the tree branches, and the number and direction of the birds are all randomly generated, ensuring no animations wille ever run the same. 
+Paper Birds in a Forest is an art piece in which an non-ending animation of birds flying in curved paths and landing on tree branches is generated. It aims to bring an outdoors birdwatching experience indoors. The animation is meant to utilze the columns between each screen in the Leeds studio as tree trunks. The color of each projector's background, the number and position of the tree branches, and the number and direction of the birds are all randomly generated, ensuring no animations wille ever run the same. 
 
 ![IMG_8899_MOV_SparkVideo](https://user-images.githubusercontent.com/88841145/134217156-e290be83-1f65-4f7d-ba63-b4f06ae2d243.gif)
 
