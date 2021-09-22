@@ -8,7 +8,9 @@ Paper Birds in a Forest is an art piece in which an non-ending animation of bird
 
 ## Setup
 
-This generative program consists of one main file titled "genart.pde" and an accompanying data folder containing relevant images. The folder and Processing can be downloaded, and the executable file can be run from the file with a few clicks and does not need to be adjusted after aside from dragging the window to fit the Leeds projectors. 
+This generative program consists of one main file titled "genart.pde" and an accompanying data folder containing relevant images. The folder and Processing can be downloaded, and the executable file can be run from the file with a few clicks and does not need to be adjusted after, aside from dragging the window to fit the Leeds projectors. 
+
+"genart.pde" can also be exported from using Processing's export function and made into an application that can live on a desktop.
 
 ## Language: Processing
 
