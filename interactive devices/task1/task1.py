@@ -6,6 +6,7 @@ from time import sleep
 from pygame import mixer
 mixer.init()
 #load sound files
+#note: files need to be 16 bit
 sound1 = mixer.Sound('stars.wav')
 sound2 = mixer.Sound('windbells.wav')
 sound3 = mixer.Sound('childrenofthestars.wav')
@@ -51,15 +52,19 @@ while True:
 		yFlag = 0
 		xFlag = 0
 		sleep(0.1)
+	#check for y toggle
 	elif joy2.is_pressed:
 		print("y is pressed")
 		yFlag = 1
 		sleep(0.1)
+	#check for x toggle
 	elif joy3.is_pressed:
 		print("x is pressed")
 		xFlag = 1
 		sleep(0.1)
+	#check to see if switch is on
 	elif switch.is_pressed:
 		switchFlag = 1
+	#check to see if switch is off
 	elif switch.is_pressed == False:
 		switchFlag = 0
