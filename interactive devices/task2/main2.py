@@ -1,54 +1,110 @@
-const int joy_sw = 18;
-const int joy_x = 15;
-const int joy_y = 2;
-const int button = 4;
+import turtle
+import serial
+import time
 
-int xpos = 0;
-int oldxpos = 0;
-int ypos = 0;
-int oldypos = 0;
-int mapX = 0;
-int mapY = 0;
-int sw_state = 1;
-int oldSwState = 0;
-int buttonState = 1;
-int oldButtonState = 0;
+greg = turtle.Turtle()
+screen = turtle.Screen()
+buttonState = 0
 
-void printConditions(){
-    mapX = map(xpos, 0, 1023, -512, 512);
-    mapY = map(ypos, 0, 1023, -512, 512);
-    Serial.print(buttonState);
-    Serial.print(" "); 
-    Serial.print(sw_state); 
-    Serial.print(" "); 
-    Serial.print(mapX);
-    Serial.print(" ");
-    Serial.print(mapY);
-    Serial.print("\n");   
-}
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
-  pinMode(joy_x, INPUT);
-  pinMode(joy_y, INPUT);
-  pinMode(joy_sw, INPUT_PULLUP);
-  pinMode(button, INPUT_PULLUP);
-}
 
-void loop() {
-  // put your main code here, to run repeatedly:
-  buttonState = digitalRead(button);
-  xpos = analogRead(joy_x);
-  ypos = analogRead(joy_y);
-  sw_state = digitalRead(joy_sw);
-  if(buttonState != oldButtonState || sw_state != oldSwState || oldxpos != xpos || oldypos != ypos){
-    printConditions();
-    oldButtonState = buttonState;
-    sw_state = oldSwState;
-    oldxpos = xpos;
-    oldypos = ypos;
-  }
+def readFromSerial():
+    ser = serial.Serial()
+    ser.baudrate = 9600
+    ser.port = '/dev/cu.SLAB_USBtoUART'
+    ser.open()
 
-  delay(100);
+    ser_input = ser.readline()
+    try:
+        line = ser_input.decode("utf-8")
+        print(line)
+        line = line[:len(line)-1]
+        format_input = line.split(" ")
+    except Exception:
+        readFromSerial()
+    ser.close()
+    time.sleep(0.1)
+    return format_input
 
-}
+def up():
+    greg.setheading(90)
+    greg.forward(25)
+
+def down():
+    greg.setheading(270)
+    greg.forward(25)
+
+def left():
+    greg.setheading(180)
+    greg.forward(25)
+
+def right():
+    greg.setheading(0)
+    greg.forward(25)
+
+def forward(i):
+    i = i/4
+    greg.forward(i)
+
+def init_settings():
+    greg.speed(0)
+    greg.width(3)
+
+
+def main():
+    pen_state = 1
+    init_settings()
+
+    while True:
+        uinput = readFromSerial()
+        if len(uinput) < 4:
+            continue
+        try:
+            x = int(uinput[2])
+            y = int(uinput[3])
+            sw = int(uinput[1])
+            button = int(uinput[0])
+        except Exception:
+            continue
+        #check for restart
+        if button == 0:
+            screen.resetscreen()
+            init_settings()
+        #check for pen
+        if sw == 0:
+            if pen_state == 0:
+                pen_state = 1
+                greg.pendown()
+            elif pen_state == 1:
+                pen_state = 0
+
+        if pen_state == 0:
+            greg.penup()
+            if x < 1200:
+                right()
+            if x > 1300:
+                left()
+            if y < 1300:
+                up()
+            if y > 1400:
+                down()
+        else:
+            if x < 1200:
+                greg.circle(100)
+            if x > 1300:
+                greg.circle(50, 180)
+            if y < 1300:
+                a = greg.xcor()
+                b = greg.ycor()
+                forward(abs(y))
+                greg.goto(a,b)
+                greg.left(50)
+
+            if y > 1400:
+                forward(200)
+                greg.right((y-1400)/3)
+    #readFromSerial()
+    #turtle.mainloop()
+    turtle.done()
+
+if __name__ == "__main__":
+    main()
