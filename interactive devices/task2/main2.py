@@ -10,7 +10,8 @@ buttonState = 0
 def readFromSerial():
     ser = serial.Serial()
     ser.baudrate = 9600
-    ser.port = '/dev/cu.SLAB_USBtoUART'
+    #ser.port = '/dev/cu.SLAB_USBtoUART'
+    ser.port = '/dev/ttyUSB0'
     ser.open()
 
     ser_input = ser.readline()
