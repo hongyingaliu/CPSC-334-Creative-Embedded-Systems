@@ -1,4 +1,5 @@
 # Task 2 - Stylized Abstract Design
+'Your Personalized Design' is a graphical interface program that allows a user to use a joystick plus switches to draw abstract stylized designs. It is meant to be a spontaneous experience in which the user has a balance of randomization as well as control, always a good formula for inspired design! The designs are quickly made and ephemeral, as much of an experience as an end product. The programs can be created as entertainment or for some quick design inspiration.  
 ## Hardware
 The device is comprised of the Raspberry Pi, an ESP32, a breadboard, a momentary switch, a toggle switch, an analog joystick, and a 5" LCD display screen.
 ## Setup
