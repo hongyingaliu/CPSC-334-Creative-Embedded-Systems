@@ -7,7 +7,7 @@ SynthDef(\tone, {arg freq = 40, nharm = 12, detune = 0.2, gate = 1, pan = 0.4, a
 	var sig, env;
 	env = EnvGen.kr(Env.adsr(0.05,0.1,0.5,3), gate);
 	sig = Blip.ar(
-		freq * 
+		freq *
 		LFNoise1.kr(0.2!16).bipolar(detune.neg, detune).midiratio,nharm
 	);
 	sig = sig * LFNoise1.kr(0.5!16).exprange(0.1,1);
@@ -55,6 +55,33 @@ x = OSCFunc( { | msg, time, addr, port |
 	//a.set(\resonancescaling, pyFreq*0.01);
 	//a.set(\nharm, pyFreq*0.01);
 	//0.01.wait;
-}, '/light' );
+}, '/light1' );
 
+y = OSCFunc( { | msg, time, addr, port |
+    var pyFreq;
+
+	pyFreq = msg[1].asFloat;
+    ( "freq is " + pyFreq ).postln;
+    a.set( \amp, pyFreq * 0.005);
+	//a.set(\resonancescaling, pyFreq*0.01);
+	//a.set(\nharm, pyFreq*0.01);
+	//0.01.wait;
+}, '/light2' );
 )
+
+
+b = Buffer.read(s, "/Users/AlanaLiu/Downloads/Ancient Chinese Chants of the Song Dynasty.wav");
+
+b.play;
+b.pause;
+
+(
+SynthDef(\playbuf , {arg out=1, bufnum=0, rate=1, trigger=1, startPos=0, loop=1;
+	Out.ar(out, Pan2.ar(PlayBuf.ar(1,bufnum, BufRateScale.kr(bufnum)*rate, trigger, BufFrames.ir(bufnum)*startPos, loop),0.0)
+	)
+}).add;
+)
+
+d = Synth.new(\playbuf);
+
+d.set(\startPos, 0)
