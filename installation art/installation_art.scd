@@ -42,46 +42,111 @@ Out.ar(0,output.dup)
 }).add
 )
 
-
 (
-a = Synth.new( \tone);
-
-x = OSCFunc( { | msg, time, addr, port |
-    var pyFreq;
-
-	pyFreq = msg[1].asFloat;
-    ( "freq is " + pyFreq ).postln;
-    a.set( \freq, pyFreq * 0.1);
-	//a.set(\resonancescaling, pyFreq*0.01);
-	//a.set(\nharm, pyFreq*0.01);
-	//0.01.wait;
-}, '/light1' );
-
-y = OSCFunc( { | msg, time, addr, port |
-    var pyFreq;
-
-	pyFreq = msg[1].asFloat;
-    ( "freq is " + pyFreq ).postln;
-    a.set( \amp, pyFreq * 0.005);
-	//a.set(\resonancescaling, pyFreq*0.01);
-	//a.set(\nharm, pyFreq*0.01);
-	//0.01.wait;
-}, '/light2' );
+SynthDef(\gongFM, {
+	arg ratio1=0.9, ratio2=0.55, ratio3=1.03, index2=2, index3=4, amp=0.3, dur=4, pan=0;
+	var sig, op1, op2, op3, env1, env2, env3;
+	env3 = EnvGen.kr(Env.new([0, 1, 1, 0], [0.4, 0.3, dur]), doneAction:2);
+	env2 = EnvGen.kr(Env.new([0, 1, 1, 0], [0, 0.3, dur]), doneAction:2);
+	env1 = EnvGen.kr(Env.new([0, 1, 1, 0], [0.003, 0.3, dur - 0.5]), doneAction:2);
+	op3 = SinOsc.ar(([67, 70, 74].midicps * ratio3), mul:[67, 70, 74].midicps * ratio3 * index3) * env3;
+	op2 = SinOsc.ar((([67, 70, 74].midicps * ratio2) + op3), mul:[67, 70, 74].midicps * ratio2 * index2) * env2;
+	op1 = SinOsc.ar(([67, 70, 74].midicps * ratio1) + op2);
+	sig = op1 * env1 * amp;
+	sig = Splay.ar(sig);
+	sig = Balance2.ar(sig[0], sig[1], pan);
+	Out.ar(0, sig);
+}).add;
 )
 
+(
+SynthDef(\forest_bird_pj, { |out=0, amp=0.1, pan=0|
+	Out.ar(out, Pan2.ar(
+		BPF.ar(BrownNoise.ar,SinOsc.kr(LFNoise2.kr(50,50,50),0,100,2000),0.001,10)
+		* amp, pan))},
+metadata: (
+	credit: "by Paul Jones, posted to sc-users mailing list 2007-04-07",
+	tags: [\forest, \bird]
+	)
+).add;
+)
 
 b = Buffer.read(s, "/Users/AlanaLiu/Downloads/Ancient Chinese Chants of the Song Dynasty.wav");
 
 b.play;
-b.pause;
+
 
 (
-SynthDef(\playbuf , {arg out=1, bufnum=0, rate=1, trigger=1, startPos=0, loop=1;
-	Out.ar(out, Pan2.ar(PlayBuf.ar(1,bufnum, BufRateScale.kr(bufnum)*rate, trigger, BufFrames.ir(bufnum)*startPos, loop),0.0)
-	)
-}).add;
+v = OSCFunc( { | msg, time, addr, port |
+    var py_data;
+
+	py_data = msg[1].asFloat;
+    //( "freq is " + py_data ).postln;
+	if (py_data > 80,{
+		a.set(\freq, 5);
+		c.set(\freq, 0);
+				//a.free;
+			},{})
+	//a.set(\resonancescaling, py_data*0.01);
+	//a.set(\nharm, py_data*0.01);
+	//0.01.wait;
+}, '/cap' );
+
+a = Synth.new( \tone);
+c = Synth.new(\voicesound6);
+d = Synth.new(\forest_bird_pj);
+
+x = OSCFunc( { | msg, time, addr, port |
+    var py_data;
+
+	py_data = msg[1].asFloat;
+    //( "freq is " + py_data ).postln;
+    a.set( \freq, py_data * 0.1 + 20);
+	//a.set(\resonancescaling, py_data*0.01);
+	//a.set(\nharm, py_data*0.01);
+	//0.01.wait;
+}, '/light2' );
+
+y = OSCFunc( { | msg, time, addr, port |
+    var py_data;
+
+	py_data = msg[1].asFloat;
+    //( "freq is " + py_data ).postln;
+    a.set( \amp, py_data * 0.005 + 1);
+	//a.set(\resonancescaling, py_data*0.01);
+	//a.set(\nharm, py_data*0.01);
+	//0.01.wait;
+}, '/light4' );
+
+z = OSCFunc( { | msg, time, addr, port |
+    var py_data; 
+
+	py_data = msg[1].asFloat;
+    //( "freq is " + py_data ).postln;
+    c.set( \freq, py_data * 0.005 + 1);
+	//a.set(\resonancescaling, py_data*0.01);
+	//a.set(\nharm, py_data*0.01);
+	//0.01.wait;
+}, '/light3' );
+
+j = OSCFunc( { | msg, time, addr, port |
+    var py_data;
+
+	py_data = msg[1].asFloat;
+	if (py_data > 300,{
+		Synth(\gongFM, [\ratio1, 0.59, \ratio2, 0.17, \ratio3, 0.75, \index2, 1.54, \index3, 3.29]);
+				//a.free;
+			},{})
+}, '/piezo' );
+
+k = OSCFunc( { | msg, time, addr, port |
+    var py_data;
+
+	py_data = msg[1].asFloat;
+	if (py_data > 10,{
+		d.set(\amp, 0.1);
+				//a.free;
+	},{d.set(\amp, 0);})
+}, '/light1' );
+
 )
-
-d = Synth.new(\playbuf);
-
-d.set(\startPos, 0)
