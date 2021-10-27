@@ -21,19 +21,31 @@ while True:
         else:
             sc_content = content
             print(sc_content)
-    print("closing connection")
+    #print("closing connection")
     client.close()
 
     all_input = sc_content.split(" ")
-    l1 = all_input[0]
-    l2 = all_input[1]
+    l1 = all_input[0]   #bottom
+    l2 = all_input[1]   #right
+    l3 = all_input[2]   #left
+    l4 = all_input[3]   #
+    p1 = all_input[4]   #piezo
+    c1 = all_input[5]   #capacitive touch
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", default="172.29.21.84",
-                        help="The ip of the OSC server")
-    parser.add_argument("--port", type=int, default=57120,
-                        help="The port the OSC server is listening on")
-    args = parser.parse_args()
-    sc_client = udp_client.SimpleUDPClient(args.ip, args.port)
-    sc_client.send_message("/light1", int(l1))
-    sc_client.send_message("/light2", int(l2))
+    if int(c1) > 50:
+        continue
+    else:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--ip", default="172.29.21.84",
+                            help="The ip of the OSC server")
+
+        parser.add_argument("--port", type=int, default=57120,
+                            help="The port the OSC server is listening on")
+        args = parser.parse_args()
+        sc_client = udp_client.SimpleUDPClient(args.ip, args.port)
+        sc_client.send_message("/light1", int(l1))
+        sc_client.send_message("/light2", int(l2))
+        sc_client.send_message("/light3", int(l3))
+        sc_client.send_message("/light4", int(l4))
+        sc_client.send_message("/piezo", int(p1))
+        sc_client.send_message("/cap", int(c1))
