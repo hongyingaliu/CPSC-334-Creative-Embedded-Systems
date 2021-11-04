@@ -3,6 +3,10 @@ s.boot;
 //address and port for osc
 n = NetAddr.new("172.29.21.84", 57121);
 
+//set audio output to "JBL GO"
+Server.default.options.inDevice_("JBL GO");
+Server.default.options.outDevice_("JBL GO");
+
 //ambient tone synth
 (
 SynthDef(\tone, {arg freq = 40, nharm = 12, detune = 0.2, gate = 1, pan = 0.4, amp = 4, out = 0;
