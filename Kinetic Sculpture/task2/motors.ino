@@ -7,7 +7,7 @@ int pos = 0;
 int servoPin = 13;
 int bswitch = 33;
 int switchState = 1;
-
+int x = 10;
 // Defines the number of steps per rotation
 const int stepsPerRevolution = 2048;
 
@@ -17,7 +17,7 @@ Stepper myStepper = Stepper(stepsPerRevolution, 19, 5, 18, 17);
 
 void setup() {
   // put your setup code here, to run once:
-  myStepper.setSpeed(5);
+  myStepper.setSpeed(4);
   Serial.begin(9600);
 
   pinMode(bswitch, INPUT_PULLUP);
@@ -27,7 +27,7 @@ void setup() {
   ESP32PWM::allocateTimer(2);
   ESP32PWM::allocateTimer(3);
   myservo.setPeriodHertz(50);    // standard 50 hz servo
-  myservo.attach(servoPin, 500, 2500); 
+  myservo.attach(servoPin, 500, 2400); 
 }
 
 void loop() {
@@ -36,18 +36,37 @@ void loop() {
   Serial.println(switchState);
   if (switchState == 0) {
     // Rotate CW 
-    
-    myStepper.step(stepsPerRevolution*0.5);
-    Serial.println("CW");
+
+    myStepper.step(4);
+
   
-    for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
+    for (int i = 0; i <= 2; i += 1) { // goes from 0 degrees to 180 degrees
       // in steps of 1 degree
       myservo.write(pos);    // tell servo to go to position in variable 'pos'
-      //delay(15);             // waits 15ms for the servo to reach the position
+      delay(5);             // waits 15ms for the servo to reach the position
+    }    
+
+    pos = pos + x;
+
+    if (pos == 180) {
+      x = -2;
+    } else if (pos == 0) {
+      x = 2;
     }
-    for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-      myservo.write(pos);    // tell servo to go to position in variable 'pos'
-      //delay(15); 
-    } 
+    /*myStepper.step(stepsPerRevolution);
+   // Serial.println("CW");
+
+    if (pos == 0) {
+      for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
+        // in steps of 1 degree
+        myservo.write(pos);    // tell servo to go to position in variable 'pos'
+        delay(7);             // waits 15ms for the servo to reach the position
+      }
+    } else if (pos = 180) {
+      for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+        myservo.write(pos);    // tell servo to go to position in variable 'pos'
+        delay(7); 
+      } 
+    }*/
   }
 }
