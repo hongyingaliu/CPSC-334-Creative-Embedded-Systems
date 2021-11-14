@@ -8,6 +8,8 @@ int servoPin = 13;
 int bswitch = 33;
 int switchState = 1;
 int x = 10;
+int a = 4;
+int counter = 0;
 // Defines the number of steps per rotation
 const int stepsPerRevolution = 2048;
 
@@ -37,8 +39,13 @@ void loop() {
   if (switchState == 0) {
     // Rotate CW 
 
-    myStepper.step(4);
-
+    counter = counter + a;
+    if (counter >= 2048){ 
+      a = -4;
+    } else if (counter == 0) {
+      a = 4;     
+    }
+    myStepper.step(a);
   
     for (int i = 0; i <= 2; i += 1) { // goes from 0 degrees to 180 degrees
       // in steps of 1 degree
@@ -48,7 +55,7 @@ void loop() {
 
     pos = pos + x;
 
-    if (pos == 180) {
+    if (pos == 90) {
       x = -2;
     } else if (pos == 0) {
       x = 2;
