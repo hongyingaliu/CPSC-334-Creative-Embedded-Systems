@@ -1,9 +1,11 @@
+#import relevant libraries including osc
 import argparse
 import socket
 from pythonosc import udp_client
 from pythonosc import osc_message_builder
 import time
 
+#set up right port
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(('172.29.21.84', 8090))
 s.listen(0)
@@ -14,8 +16,9 @@ while True:
     sc_content = 0
 
     while True:
+        #decode received info from wifi client
         content = (client.recv(1024)).decode("utf-8")
-
+        #if nothing was sent don't continue
         if len(content) == 0:
             break
         else:
@@ -23,18 +26,22 @@ while True:
             print(sc_content)
     #print("closing connection")
     client.close()
-
+    
+    #split sensors into list
     all_input = sc_content.split(" ")
+    #assign each data number to the correct sensor
     l1 = all_input[0]   #bottom
     l2 = all_input[1]   #right
     l3 = all_input[2]   #left
-    l4 = all_input[3]   #
+    l4 = all_input[3]   #middle
     p1 = all_input[4]   #piezo
     c1 = all_input[5]   #capacitive touch
-
+    
+    #check for capacitive touch, else don't do anything
     if int(c1) > 50:
         continue
     else:
+        #sent data to SC with tags
         parser = argparse.ArgumentParser()
         parser.add_argument("--ip", default="172.29.21.84",
                             help="The ip of the OSC server")
