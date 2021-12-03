@@ -4,4 +4,6 @@
 
 ## Module 2: Task1 is located in folder "interactive devices"
 
-## Modeule 3: Installation Art is located in folder "installation art"
+## Module 3: Installation Art is located in folder "installation art"
+
+## Module 4: Kinetic Sculpture is located in folder "Kinetic Sculpture"
