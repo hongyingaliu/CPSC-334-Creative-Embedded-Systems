@@ -1,3 +1,4 @@
+//Add GPIO pins for each sensor
 const int lightPin = 34;
 const int lighttwoPin = 35;
 const int buttonPin = 4;
@@ -5,6 +6,7 @@ const int buttontwoPin = 17;
 int buttonState = 0;
 const int piezo_pin = 33;
 
+//variables used to set limits for sensory data
 int prev = 0;
 int prev2 = 0;
 int push = 0;
@@ -25,27 +27,28 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  //read input
   int piezo_state = analogRead(piezo_pin); //
   int light_val = analogRead(lightPin);
   int lighttwo_val = analogRead(lighttwoPin);
   buttonState = digitalRead(buttonPin);
   int buttontwoState = digitalRead(buttontwoPin);
 
+  //check if continue/reset button has been pushed
   checkforpush(buttonState);
 
   //push2 += push2;
   if(buttontwoState == 1){
     push2++;
   }
-  //checkforreset(buttontwoState);  
-  //Serial.println(push2);
+  //check to see if the limits have be rewritten
   lightmin(light_val);
   piezomax(piezo_state);
   lightdiff(lighttwo_val);
   
-
+  //compile data that needs to be send to Processing
   String data = String(flag) + ',' + String(push) + ',' + String(lmin) + ',' + String(pmax) + ',' + String(ldiff) + ',';
-  //if(flag == 0 && push2 > 3){
+  //continue
   if(flag == 0 && buttontwoState == 1 && prev2 == 0){
     Serial.println(data);
     push2 = 0;
@@ -70,12 +73,11 @@ void loop() {
     delay(40);
   }
   
-  //String data = String(buttontwoState) + ',' + String(piezo_state) + ',' + String(light_val) + ',' + String(buttonState);
-  //Serial.println(data);
   prev2 = buttontwoState;
   delay(20);
 }
 
+//helps eliminate multiple triggers, must be a new push
 void checkforpush(int i){
   if (prev == 0 && i ==1){
     push ++;
@@ -83,18 +85,21 @@ void checkforpush(int i){
   prev = i;
 }
 
+//check minimum of light sensor
 void lightmin(int i){
   if (lmin > i) {
     lmin = i;
   } 
 }
 
+//check for max piezo touch
 void piezomax(int i){
   if (pmax < i) {
     pmax = i;
   } 
 }
 
+//check for difference in light sensing extremes
 void lightdiff(int i){
   if(lmin2 > i) {
     lmin2 = i;
