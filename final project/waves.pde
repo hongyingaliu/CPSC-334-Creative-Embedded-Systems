@@ -1,4 +1,5 @@
 import http.requests.*;
+//import serial for communication
 import processing.serial.*;
 
 //Built off of Processing example: https://processing.org/examples/noisewave.html
