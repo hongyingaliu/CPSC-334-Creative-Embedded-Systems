@@ -2,7 +2,7 @@ import http.requests.*;
 //import serial for communication
 import processing.serial.*;
 
-//Built off of Processing example: https://processing.org/examples/noisewave.html
+//Built off of Daniel Shiffman's Processing example: https://processing.org/examples/noisewave.html
 
 
 float yoff = 0.0;
